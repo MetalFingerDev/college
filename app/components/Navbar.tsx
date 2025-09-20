@@ -1,44 +1,97 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import {
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 
-const Navbar = () => {
+interface NavRoute {
+	label: string;
+	href: string;
+	active: boolean;
+	requiresAuth?: boolean;
+}
+
+export default function Navbar() {
+	const pathname = usePathname();
 	const { isSignedIn, user } = useUser();
 
+	// Define navigation routes similar to your sidebar pattern
+	const routes = useMemo(() => {
+		const baseRoutes: NavRoute[] = [
+			{
+				label: "Home",
+				href: "/",
+				active: pathname === "/",
+				requiresAuth: false,
+			},
+		];
+
+		// Add authenticated routes
+		if (isSignedIn) {
+			baseRoutes.push(
+				{
+					label: "Dashboard",
+					href: "/dashboard",
+					active: pathname === "/dashboard",
+					requiresAuth: true,
+				},
+				{
+					label: user?.firstName || "Profile",
+					href: "/profile",
+					active: pathname === "/profile",
+					requiresAuth: true,
+				}
+			);
+		}
+
+		return baseRoutes;
+	}, [pathname, isSignedIn, user?.firstName]);
+
 	return (
-		<nav className='bg-blue-600 text-white p-4 flex items-center justify-between'>
+		<nav className='flex items-center justify-between'>
 			{/* Logo */}
 			<h1 className='text-2xl font-bold'>MyApp</h1>
 
-			{/* Navigation Links */}
+			{/* Navigation Menu */}
 			<div className='flex items-center space-x-6'>
-				<Link href='/' className='hover:text-gray-200'>
-					Home
-				</Link>
+				<NavigationMenu>
+					<NavigationMenuList>
+						{routes.map((route) => (
+							<NavigationMenuItem key={route.label}>
+								{/* Simple link item */}
+								<NavigationMenuLink asChild>
+									<Link
+										href={route.href}
+										className={`px-3 py-2 ${route.active ? "border-b-2" : ""}`}>
+										{route.label}
+									</Link>
+								</NavigationMenuLink>
+							</NavigationMenuItem>
+						))}
+					</NavigationMenuList>
+				</NavigationMenu>
 
-				{isSignedIn ? (
-					<>
-						<Link href='/dashboard' className='hover:text-gray-200'>
-							Dashboard
-						</Link>
-						<Link href='/profile' className='hover:text-gray-200'>
-							{user.firstName}
-						</Link>
+				{/* Right side items */}
+				<div className='flex items-center space-x-4'>
+					{isSignedIn ? (
 						<UserButton afterSignOutUrl='/' />
-					</>
-				) : (
-					<div className='flex items-center space-x-4'>
+					) : (
 						<SignInButton mode='modal'>
-							<button className='bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100'>
-								Sign In
-							</button>
+							<Button>Sign In</Button>
 						</SignInButton>
-					</div>
-				)}
+					)}
+					<ThemeToggle />
+				</div>
 			</div>
 		</nav>
 	);
-};
-
-export default Navbar;
+}
