@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 			<html lang='en'>
 				<body>
 					<Navbar />
-					<main>{children}</main>
+					{children}
 				</body>
 			</html>
 		</ClerkProvider>

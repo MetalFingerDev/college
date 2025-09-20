@@ -22,11 +22,9 @@ const Navbar = () => {
 						<Link href='/dashboard' className='hover:text-gray-200'>
 							Dashboard
 						</Link>
-						<span className='text-sm'>
-							<Link href='/profile' className='hover:text-gray-200'>
-								{user.firstName}
-							</Link>
-						</span>
+						<Link href='/profile' className='hover:text-gray-200'>
+							{user.firstName}
+						</Link>
 						<UserButton afterSignOutUrl='/' />
 					</>
 				) : (
