@@ -22,7 +22,11 @@ const Navbar = () => {
 						<Link href='/dashboard' className='hover:text-gray-200'>
 							Dashboard
 						</Link>
-						<span className='text-sm'>Welcome, {user.firstName}!</span>
+						<span className='text-sm'>
+							<Link href='/profile' className='hover:text-gray-200'>
+								{user.firstName}
+							</Link>
+						</span>
 						<UserButton afterSignOutUrl='/' />
 					</>
 				) : (
