@@ -59,7 +59,7 @@ export default function Navbar() {
 	return (
 		<nav className='flex items-center justify-between'>
 			{/* Logo */}
-			<h1 className='text-2xl font-bold'>MyApp</h1>
+			<h1>MyApp</h1>
 
 			{/* Navigation Menu */}
 			<div className='flex items-center space-x-6'>
