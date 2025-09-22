@@ -14,7 +14,15 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Home, Search, Palette, Sun, Moon, Computer } from "lucide-react";
+import {
+	Home,
+	Search,
+	Palette,
+	Sun,
+	Moon,
+	Computer,
+	LucideLayoutDashboard,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface NavbarProps {
@@ -29,7 +37,8 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ children }) => {
 	const pathname = usePathname();
 
-	const routes = useMemo(
+	// Public routes - available to everyone
+	const publicRoutes = useMemo(
 		() => [
 			{
 				icon: Home,
@@ -37,11 +46,24 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 				href: "/",
 				active: pathname === "/",
 			},
+		],
+		[pathname]
+	);
+
+	// Protected routes - only for signed-in users
+	const protectedRoutes = useMemo(
+		() => [
 			{
 				icon: Search,
 				label: "Search",
 				href: "/search",
 				active: pathname === "/search",
+			},
+			{
+				icon: LucideLayoutDashboard,
+				label: "Dashboard",
+				href: "/dashboard",
+				active: pathname === "/dashboard",
 			},
 		],
 		[pathname]
@@ -62,8 +84,25 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 				{/* Left side navigation */}
 				<NavigationMenu>
 					<NavigationMenuList>
+						{/* Always show public routes */}
+						{publicRoutes.map((route) => (
+							<NavigationMenuItem key={route.label}>
+								<NavigationMenuLink asChild>
+									<Link
+										href={route.href}
+										className={`flex flex-row items-center gap-2 ${
+											route.active ? "border-b-2" : ""
+										}`}>
+										<route.icon size={16} />
+										{route.label}
+									</Link>
+								</NavigationMenuLink>
+							</NavigationMenuItem>
+						))}
+
+						{/* Only show protected routes when signed in */}
 						<SignedIn>
-							{routes.map((route) => (
+							{protectedRoutes.map((route) => (
 								<NavigationMenuItem key={route.label}>
 									<NavigationMenuLink asChild>
 										<Link
