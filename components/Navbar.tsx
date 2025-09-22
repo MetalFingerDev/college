@@ -14,10 +14,16 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Home, Search } from "lucide-react";
+import { Home, Search, Palette, Sun, Moon, Computer } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface NavbarProps {
 	children: React.ReactNode;
+	themes?: Array<{
+		icon: React.ElementType;
+		label: string;
+		value: string;
+	}>;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ children }) => {
@@ -41,9 +47,18 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 		[pathname]
 	);
 
+	const themes = useMemo(
+		() => [
+			{ icon: Computer, label: "System" },
+			{ icon: Sun, label: "Light" },
+			{ icon: Moon, label: "Dark" },
+		],
+		[]
+	);
+
 	return (
 		<>
-			<header className='flex justify-between items-center p-4 gap-4 h-16'>
+			<header className='flex h-16 items-center justify-between gap-4 p-4'>
 				{/* Left side navigation */}
 				<NavigationMenu>
 					<NavigationMenuList>
@@ -53,8 +68,8 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 									<NavigationMenuLink asChild>
 										<Link
 											href={route.href}
-											className={`flex items-center gap-2 ${
-												route.active ? "font-bold" : ""
+											className={`flex flex-row items-center gap-2 ${
+												route.active ? "border-b-2" : ""
 											}`}>
 											<route.icon size={16} />
 											{route.label}
@@ -62,25 +77,38 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 									</NavigationMenuLink>
 								</NavigationMenuItem>
 							))}
-							<NavigationMenuItem>
-								<NavigationMenuTrigger>Theme</NavigationMenuTrigger>
-								<NavigationMenuContent>
-									<ul className='grid w-[200px] gap-4'>
-										<li>
+						</SignedIn>
+					</NavigationMenuList>
+				</NavigationMenu>
+				{/* Right side navigation */}
+				<NavigationMenu>
+					<NavigationMenuList>
+						<NavigationMenuItem>
+							<NavigationMenuTrigger className='flex flex-row items-center gap-2 font-normal group'>
+								<Palette
+									size={16}
+									className='transition-colors duration-300 group-hover:animate-[rainbow_2s_infinite]'
+								/>{" "}
+								Theme
+							</NavigationMenuTrigger>
+							<NavigationMenuContent>
+								<ul className='grid w-auto gap-2 p-2'>
+									{themes.map((theme) => (
+										<li key={theme.label}>
 											<NavigationMenuLink asChild>
-												<Link href='#'>System</Link>
-											</NavigationMenuLink>
-											<NavigationMenuLink asChild>
-												<Link href='#'>Sun</Link>
-											</NavigationMenuLink>
-											<NavigationMenuLink asChild>
-												<Link href='#'>Moon</Link>
+												<Link
+													href='#'
+													className='flex flex-row items-center gap-2 p-2 hover:bg-gray-100 rounded'>
+													<theme.icon size={16} />
+													{theme.label}
+												</Link>
 											</NavigationMenuLink>
 										</li>
-									</ul>
-								</NavigationMenuContent>
-							</NavigationMenuItem>
-
+									))}
+								</ul>
+							</NavigationMenuContent>
+						</NavigationMenuItem>
+						<SignedIn>
 							<NavigationMenuItem>
 								<UserButton />
 							</NavigationMenuItem>
@@ -88,11 +116,13 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 
 						<SignedOut>
 							<NavigationMenuItem>
-								<SignInButton mode='modal'>
-									<button className='bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer'>
-										Sign In
-									</button>
-								</SignInButton>
+								<NavigationMenuLink>
+									<SignInButton mode='modal'>
+										<Button className='bg-purple-700 text-white border-b-2 shadow-2xl'>
+											Sign In
+										</Button>
+									</SignInButton>
+								</NavigationMenuLink>
 							</NavigationMenuItem>
 						</SignedOut>
 					</NavigationMenuList>
