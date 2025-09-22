@@ -14,6 +14,7 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { Home, Search } from "lucide-react";
 
 interface NavbarProps {
 	children: React.ReactNode;
@@ -25,11 +26,17 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 	const routes = useMemo(
 		() => [
 			{
+				icon: Home,
 				label: "Home",
 				href: "/",
-				activate: pathname !== "/search",
+				active: pathname === "/",
 			},
-			{ label: "Search", href: "/search", activate: pathname === "/search" },
+			{
+				icon: Search,
+				label: "Search",
+				href: "/search",
+				active: pathname === "/search",
+			},
 		],
 		[pathname]
 	);
@@ -41,36 +48,44 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 				<NavigationMenu>
 					<NavigationMenuList>
 						<SignedIn>
+							{routes.map((route) => (
+								<NavigationMenuItem key={route.label}>
+									<NavigationMenuLink asChild>
+										<Link
+											href={route.href}
+											className={`flex items-center gap-2 ${
+												route.active ? "font-bold" : ""
+											}`}>
+											<route.icon size={16} />
+											{route.label}
+										</Link>
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+							))}
 							<NavigationMenuItem>
-								<NavigationMenuTrigger>Menu</NavigationMenuTrigger>
+								<NavigationMenuTrigger>Theme</NavigationMenuTrigger>
 								<NavigationMenuContent>
 									<ul className='grid w-[200px] gap-4'>
 										<li>
 											<NavigationMenuLink asChild>
-												<Link href='#'>Components</Link>
+												<Link href='#'>System</Link>
 											</NavigationMenuLink>
 											<NavigationMenuLink asChild>
-												<Link href='#'>Documentation</Link>
+												<Link href='#'>Sun</Link>
 											</NavigationMenuLink>
 											<NavigationMenuLink asChild>
-												<Link href='#'>Blocks</Link>
+												<Link href='#'>Moon</Link>
 											</NavigationMenuLink>
 										</li>
 									</ul>
 								</NavigationMenuContent>
 							</NavigationMenuItem>
-						</SignedIn>
-					</NavigationMenuList>
-				</NavigationMenu>
 
-				{/* Right side navigation */}
-				<NavigationMenu>
-					<NavigationMenuList>
-						<SignedIn>
 							<NavigationMenuItem>
 								<UserButton />
 							</NavigationMenuItem>
 						</SignedIn>
+
 						<SignedOut>
 							<NavigationMenuItem>
 								<SignInButton mode='modal'>
