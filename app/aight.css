@@ -85,8 +85,23 @@
 	body {
 		@apply bg-background text-foreground;
 	}
-	header {
-		@apply flex h-16 items-center justify-between gap-4 p-4;
+}
+
+@layer components {
+	.nav-link {
+		@apply flex flex-row items-center gap-2;
+	}
+	.nav-link-active {
+		@apply border-b-2;
+	}
+	.theme-trigger {
+		@apply flex flex-row items-center gap-2 font-normal group;
+	}
+	.theme-link {
+		@apply flex flex-row items-center gap-2 p-2 rounded hover:bg-gray-100;
+	}
+	.signin-button {
+		@apply bg-purple-700 text-white border-b-2 shadow-2xl;
 	}
 }
 
@@ -113,3 +128,94 @@
 		color: #ef4444;
 	} /* back to red */
 }
+
+
+
+	return (
+		<>
+			<header className='flex h-16 items-center justify-between gap-4 p-4'>
+				{/* Left side navigation */}
+				<NavigationMenu>
+					<NavigationMenuList>
+						{/* Always show public routes */}
+						{publicRoutes.map((route) => (
+							<NavigationMenuItem key={route.label}>
+								<NavigationMenuLink asChild>
+									<Link
+										href={route.href}
+										className={`nav-link ${
+											route.active ? "nav-link-active" : ""
+										}`}>
+										<route.icon size={16} />
+										{route.label}
+									</Link>
+								</NavigationMenuLink>
+							</NavigationMenuItem>
+						))}
+
+						{/* Only show protected routes when signed in */}
+						<SignedIn>
+							{protectedRoutes.map((route) => (
+								<NavigationMenuItem key={route.label}>
+									<NavigationMenuLink asChild>
+										<Link
+											href={route.href}
+											className={`nav-link ${
+												route.active ? "nav-link-active" : ""
+											}`}>
+											<route.icon size={16} />
+											{route.label}
+										</Link>
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+							))}
+						</SignedIn>
+					</NavigationMenuList>
+				</NavigationMenu>
+				{/* Right side navigation */}
+				<NavigationMenu>
+					<NavigationMenuList>
+						<NavigationMenuItem>
+							<NavigationMenuTrigger className='theme-trigger'>
+								<Palette
+									size={16}
+									className='transition-colors duration-300 group-hover:animate-[rainbow_2s_infinite]'
+								/>{" "}
+								Theme
+							</NavigationMenuTrigger>
+							<NavigationMenuContent>
+								<ul className='grid w-auto gap-2 p-2'>
+									{themes.map((theme) => (
+										<li key={theme.label}>
+											<NavigationMenuLink asChild>
+												<Link href='#' className='theme-link'>
+													<theme.icon size={16} />
+													{theme.label}
+												</Link>
+											</NavigationMenuLink>
+										</li>
+									))}
+								</ul>
+							</NavigationMenuContent>
+						</NavigationMenuItem>
+						<SignedIn>
+							<NavigationMenuItem>
+								<UserButton />
+							</NavigationMenuItem>
+						</SignedIn>
+
+						<SignedOut>
+							<NavigationMenuItem>
+								<NavigationMenuLink>
+									<SignInButton mode='modal'>
+										<Button className='signin-button'>Sign In</Button>
+									</SignInButton>
+								</NavigationMenuLink>
+							</NavigationMenuItem>
+						</SignedOut>
+					</NavigationMenuList>
+				</NavigationMenu>
+			</header>
+			<main>{children}</main>
+		</>
+	);

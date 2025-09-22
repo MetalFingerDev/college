@@ -1,4 +1,16 @@
+/* Navbar */
+
 "use client";
+
+import {
+	Home,
+	Search,
+	Palette,
+	Sun,
+	Moon,
+	Computer,
+	LucideLayoutDashboard,
+} from "lucide-react";
 
 import {
 	NavigationMenu,
@@ -9,20 +21,10 @@ import {
 	NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-
+import Link from "next/link";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
-import {
-	Home,
-	Search,
-	Palette,
-	Sun,
-	Moon,
-	Computer,
-	LucideLayoutDashboard,
-} from "lucide-react";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 interface NavbarProps {
@@ -35,9 +37,18 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ children }) => {
+	const themes = useMemo(
+		() => [
+			{ icon: Computer, label: "System" },
+			{ icon: Sun, label: "Light" },
+			{ icon: Moon, label: "Dark" },
+		],
+		[]
+	);
+
 	const pathname = usePathname();
 
-	// Public routes - available to everyone
+	// Public routes
 	const publicRoutes = useMemo(
 		() => [
 			{
@@ -50,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 		[pathname]
 	);
 
-	// Protected routes - only for signed-in users
+	// Protected routes
 	const protectedRoutes = useMemo(
 		() => [
 			{
@@ -69,18 +80,9 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 		[pathname]
 	);
 
-	const themes = useMemo(
-		() => [
-			{ icon: Computer, label: "System" },
-			{ icon: Sun, label: "Light" },
-			{ icon: Moon, label: "Dark" },
-		],
-		[]
-	);
-
 	return (
 		<>
-			<header className='flex h-16 items-center justify-between gap-4 p-4'>
+			<header>
 				{/* Left side navigation */}
 				<NavigationMenu>
 					<NavigationMenuList>
