@@ -54,16 +54,16 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 	const protectedRoutes = useMemo(
 		() => [
 			{
-				icon: Search,
-				label: "Search",
-				href: "/search",
-				active: pathname === "/search",
-			},
-			{
 				icon: LucideLayoutDashboard,
 				label: "Dashboard",
 				href: "/dashboard",
 				active: pathname === "/dashboard",
+			},
+			{
+				icon: Search,
+				label: "Search",
+				href: "/search",
+				active: pathname === "/search",
 			},
 		],
 		[pathname]
