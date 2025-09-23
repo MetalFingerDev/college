@@ -131,7 +131,8 @@
 		@apply border-b-2;
 	}
 	.theme-trigger {
-		@apply flex flex-row items-center gap-2 font-normal group;
+		/* `group` is a variant, not a utility; do not @apply it */
+		@apply flex flex-row items-center gap-2 font-normal;
 	}
 	.theme-link {
 		@apply flex flex-row items-center gap-2 p-2 rounded hover:bg-gray-100;
