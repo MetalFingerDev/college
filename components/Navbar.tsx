@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { ConvexProvider } from "convex/react";
 
 interface NavbarProps {
 	children: React.ReactNode;
