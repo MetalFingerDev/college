@@ -44,7 +44,6 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 			{ icon: Sun, label: "Light" },
 			{ icon: Moon, label: "Dark" },
 		],
-		[]
 	);
 
 	const pathname = usePathname();

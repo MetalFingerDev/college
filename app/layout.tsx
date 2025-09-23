@@ -20,7 +20,7 @@ export default function RootLayout({
 				<body>
 					<Navbar>
 						{children}
-    </Navbar>
+    				</Navbar>
 				</body>
 			</html>
 		</ClerkProvider>
