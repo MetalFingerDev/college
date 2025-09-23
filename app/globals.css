@@ -123,22 +123,29 @@
 	}
 }
 
-@layer components {
+@layer utilities {
 	.nav-link {
 		@apply flex flex-row items-center gap-2;
 	}
 	.nav-link-active {
-		@apply border-b-2;
+		@apply border-b-2 border-primary;
 	}
+	.nav-menu {
+		@apply grid w-auto gap-2 p-2;
+	}
+
+	.nav-menu-link {
+		@apply flex flex-row items-center gap-2 p-2 hover:bg-gray-100 rounded;
+	}
+
 	.theme-trigger {
-		/* `group` is a variant, not a utility; do not @apply it */
 		@apply flex flex-row items-center gap-2 font-normal;
 	}
 	.theme-link {
 		@apply flex flex-row items-center gap-2 p-2 rounded hover:bg-gray-100;
 	}
 	.signin-button {
-		@apply bg-purple-700 text-white border-b-2 shadow-2xl;
+		@apply bg-purple-700 text-white border-b-2 border-primary shadow-2xl;
 	}
 }
 

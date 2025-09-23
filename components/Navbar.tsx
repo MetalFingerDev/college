@@ -94,8 +94,8 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 									<Link
 										href={route.href}
 										className={cn(
-											"flex flex-row items-center gap-2",
-											route.active && "border-b-2 border-primary"
+											"nav-link",
+											route.active && "nav-link-active"
 										)}>
 										<route.icon size={16} />
 										{route.label}
@@ -112,8 +112,8 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 										<Link
 											href={route.href}
 											className={cn(
-												"flex flex-row items-center gap-2",
-												route.active && "border-b-2 border-primary"
+												"nav-link",
+												route.active && "nav-link-active"
 											)}>
 											<route.icon size={16} />
 											{route.label}
@@ -128,7 +128,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 				<NavigationMenu>
 					<NavigationMenuList>
 						<NavigationMenuItem>
-							<NavigationMenuTrigger className='flex flex-row items-center gap-2 font-normal group'>
+							<NavigationMenuTrigger className='theme-trigger'>
 								<Palette
 									size={16}
 									className='transition-colors duration-300 group-hover:animate-[rainbow_2s_infinite]'
@@ -136,13 +136,11 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 								Theme
 							</NavigationMenuTrigger>
 							<NavigationMenuContent>
-								<ul className='grid w-auto gap-2 p-2'>
+								<ul className='nav-menu'>
 									{themes.map((theme) => (
 										<li key={theme.label}>
 											<NavigationMenuLink asChild>
-												<Link
-													href='#'
-													className='flex flex-row items-center gap-2 p-2 hover:bg-gray-100 rounded'>
+												<Link href='#' className='nav-menu-link'>
 													<theme.icon size={16} />
 													{theme.label}
 												</Link>
@@ -157,14 +155,11 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 								<UserButton />
 							</NavigationMenuItem>
 						</SignedIn>
-
 						<SignedOut>
 							<NavigationMenuItem>
 								<NavigationMenuLink>
 									<SignInButton mode='modal'>
-										<Button className='bg-purple-700 text-white border-b-2 shadow-2xl'>
-											Sign In
-										</Button>
+										<Button className='signin-button'>Sign In</Button>
 									</SignInButton>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
