@@ -22,10 +22,11 @@ import {
 } from "@/components/ui/navigation-menu";
 
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 
 interface NavbarProps {
 	children: React.ReactNode;
@@ -92,9 +93,10 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 								<NavigationMenuLink asChild>
 									<Link
 										href={route.href}
-										className={`flex flex-row items-center gap-2 ${
-											route.active ? "border-b-2" : ""
-										}`}>
+										className={cn(
+											"flex flex-row items-center gap-2",
+											route.active && "border-b-2 border-primary"
+										)}>
 										<route.icon size={16} />
 										{route.label}
 									</Link>
@@ -109,9 +111,10 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 									<NavigationMenuLink asChild>
 										<Link
 											href={route.href}
-											className={`flex flex-row items-center gap-2 ${
-												route.active ? "border-b-2" : ""
-											}`}>
+											className={cn(
+												"flex flex-row items-center gap-2",
+												route.active && "border-b-2 border-primary"
+											)}>
 											<route.icon size={16} />
 											{route.label}
 										</Link>
