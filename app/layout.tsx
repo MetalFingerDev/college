@@ -1,27 +1,13 @@
-"use client";
 import type { Metadata } from "next";
-import "./globals.css";
-import { ConvexProvider, ConvexReactClient } from "convex/react";
-
-import Navbar from "@/components/Navbar";
+import { ConvexClientProvider } from "../components/providers/ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
+import Navbar from "@/components/Navbar";
+import "../styles/globals.css";
 
 export const metadata: Metadata = {
 	title: "college",
 	description: "kaal age",
 };
-
-/*
-const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
-if (!convexUrl) {
-	throw new Error("NEXT_PUBLIC_CONVEX_URL is not set in environment variables");
-}
-const convex = new ConvexReactClient(convexUrl); */
-
-//  Placeholder URL for development
-const convexUrl =
-	process.env.NEXT_PUBLIC_CONVEX_URL || "https://placeholder.convex.cloud";
-const convex = new ConvexReactClient(convexUrl);
 
 export default function RootLayout({
 	children,
@@ -32,9 +18,9 @@ export default function RootLayout({
 		<ClerkProvider>
 			<html lang='en'>
 				<body>
-					<ConvexProvider client={convex}>
+					<ConvexClientProvider>
 						<Navbar>{children}</Navbar>
-					</ConvexProvider>
+					</ConvexClientProvider>
 				</body>
 			</html>
 		</ClerkProvider>
