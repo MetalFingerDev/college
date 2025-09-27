@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ConvexClientProvider } from "../components/providers/ConvexClientProvider";
+import { ThemeProvider } from "../components/providers/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
+
 import Navbar from "@/components/Navbar";
 import "../styles/globals.css";
 
@@ -16,11 +18,17 @@ export default function RootLayout({
 }>) {
 	return (
 		<ClerkProvider>
-			<html lang='en'>
+			<html lang='en' suppressHydrationWarning>
 				<body>
-					<ConvexClientProvider>
-						<Navbar>{children}</Navbar>
-					</ConvexClientProvider>
+					<ThemeProvider
+						attribute='class'
+						defaultTheme='system'
+						enableSystem
+						disableTransitionOnChange>
+						<ConvexClientProvider>
+							<Navbar>{children} </Navbar>
+						</ConvexClientProvider>
+					</ThemeProvider>
 				</body>
 			</html>
 		</ClerkProvider>

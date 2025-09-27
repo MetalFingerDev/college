@@ -25,9 +25,9 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
+import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { ConvexProvider } from "convex/react";
 
 interface NavbarProps {
 	children: React.ReactNode;
@@ -39,17 +39,19 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ children }) => {
+	// Theme toggle
 	const themes = useMemo(
 		() => [
-			{ icon: Computer, label: "System" },
-			{ icon: Sun, label: "Light" },
-			{ icon: Moon, label: "Dark" },
-		],[]
+			{ icon: Computer, label: "system" },
+			{ icon: Sun, label: "light" },
+			{ icon: Moon, label: "dark" },
+		],
+		[]
 	);
-
-	const pathname = usePathname();
+	const { setTheme } = useTheme();
 
 	// Public routes
+	const pathname = usePathname();
 	const publicRoutes = useMemo(
 		() => [
 			{
@@ -140,7 +142,10 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 									{themes.map((theme) => (
 										<li key={theme.label}>
 											<NavigationMenuLink asChild>
-												<Link href='#' className='nav-menu-link'>
+												<Link
+													href='#'
+													className='nav-menu-link'
+													onClick={() => setTheme(theme.label)}>
 													<theme.icon size={16} />
 													{theme.label}
 												</Link>
@@ -167,7 +172,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 					</NavigationMenuList>
 				</NavigationMenu>
 			</header>
-			<main>{children}</main>
+			{children}
 		</>
 	);
 };
