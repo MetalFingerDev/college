@@ -97,6 +97,6 @@ const Hero = () => {
 				</a>
 			</footer>
 		</div>);
-}
+};
 
 export default Hero;
