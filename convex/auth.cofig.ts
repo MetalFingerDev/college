@@ -1,11 +1,10 @@
-https://immortal-mule-94.clerk.accounts.dev
-
-
-
-export default {
+const authConfig = {
   providers: [
     {
-     `process.env.CLERK_JWT_ISSUER_DOMAIN`
+      domain: process.env.CLERK_FRONTEND_API_URL,
+      applicationID: "convex",
     },
-  ]
+  ],
 };
+
+export default authConfig;
