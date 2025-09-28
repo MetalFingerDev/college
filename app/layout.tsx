@@ -1,8 +1,8 @@
+import React from "react";
 import type { Metadata } from "next";
-import { ConvexClientProvider } from "../components/providers/ConvexClientProvider";
-import { ThemeProvider } from "../components/providers/ThemeProvider";
-import { ClerkProvider } from "@clerk/nextjs";
-
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ClerkProvider, ClerkLoaded } from "@clerk/nextjs";
+import ConvexClientProvider from "@/components/providers/ConvexClientProvider";
 import Navbar from "@/components/Navbar";
 import "../styles/globals.css";
 
@@ -17,20 +17,23 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<ClerkProvider>
-			<html lang='en' suppressHydrationWarning>
-				<body>
-					<ThemeProvider
-						attribute='class'
-						defaultTheme='system'
-						enableSystem
-						disableTransitionOnChange>
+		<html lang='en' suppressHydrationWarning>
+			<body>
+				<ClerkProvider>
+					<ClerkLoaded>
 						<ConvexClientProvider>
-							<Navbar>{children} </Navbar>
+							<ThemeProvider
+								attribute='class'
+								defaultTheme='system'
+								enableSystem
+								disableTransitionOnChange>
+								<Navbar />
+								{children}
+							</ThemeProvider>
 						</ConvexClientProvider>
-					</ThemeProvider>
-				</body>
-			</html>
-		</ClerkProvider>
+					</ClerkLoaded>
+				</ClerkProvider>
+			</body>
+		</html>
 	);
 }

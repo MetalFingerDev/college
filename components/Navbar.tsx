@@ -30,7 +30,6 @@ import { usePathname } from "next/navigation";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 interface NavbarProps {
-	children: React.ReactNode;
 	themes?: Array<{
 		icon: React.ElementType;
 		label: string;
@@ -38,7 +37,7 @@ interface NavbarProps {
 	}>;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ children }) => {
+const Navbar: React.FC<NavbarProps> = () => {
 	// Theme toggle
 	const themes = useMemo(
 		() => [
@@ -172,7 +171,6 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 					</NavigationMenuList>
 				</NavigationMenu>
 			</header>
-			{children}
 		</>
 	);
 };
