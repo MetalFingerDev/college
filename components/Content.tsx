@@ -66,11 +66,13 @@ const Content = () => {
 					) : (
 						<div className='space-y-2'>
 							{tasks.map((task) => (
-								<div key={task._id} className='p-3 border rounded-lg'>
+								<div
+									key={task._id}
+									className='p-3 border rounded-lg'
+									onClick={() => handleToggle(task._id)}>
 									<div className='flex justify-between items-center'>
 										<p
 											className={task.isCompleted ? "line-through" : ""}
-											onClick={() => handleToggle(task._id)}
 											style={{ cursor: "pointer" }}>
 											{task.text}
 										</p>
