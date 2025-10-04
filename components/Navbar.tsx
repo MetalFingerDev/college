@@ -27,19 +27,30 @@ import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import {
+	SignInButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+	useUser,
+} from "@clerk/nextjs";
 
-interface NavbarProps {
-	themes?: Array<{
-		icon: React.ElementType;
-		label: string;
-		value: string;
-	}>;
-}
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC = () => {
 	// Theme toggle
-	const themes = useMemo(
+	const { setTheme } = useTheme();
+
+	// Fetch user's custom themes
+	const { user } = useUser();
+	const userThemes = useQuery(
+		api.themes.getUserThemes,
+		user ? { userId: user.id } : "skip"
+	);
+
+	// Default themes
+	const defaultThemes = useMemo(
 		() => [
 			{ icon: Computer, label: "system" },
 			{ icon: Sun, label: "light" },
@@ -47,7 +58,6 @@ const Navbar: React.FC<NavbarProps> = () => {
 		],
 		[]
 	);
-	const { setTheme } = useTheme();
 
 	// Public routes
 	const pathname = usePathname();
@@ -138,7 +148,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 							</NavigationMenuTrigger>
 							<NavigationMenuContent>
 								<ul className='nav-menu'>
-									{themes.map((theme) => (
+									{defaultThemes.map((theme) => (
 										<li key={theme.label}>
 											<NavigationMenuLink asChild>
 												<Link
@@ -151,6 +161,29 @@ const Navbar: React.FC<NavbarProps> = () => {
 											</NavigationMenuLink>
 										</li>
 									))}
+									{/* User's custom themes (only when signed in) */}
+									<SignedIn>
+										{userThemes && userThemes.length > 0 && (
+											<>
+												<li>
+													<hr className='theme-separator' />
+												</li>
+												{userThemes.map((theme) => (
+													<li key={theme._id}>
+														<NavigationMenuLink asChild>
+															<Link
+																href='#'
+																className='nav-menu-link custom-theme'
+																onClick={() => setTheme(theme.value)}>
+																<Palette size={16} />
+																{theme.name}
+															</Link>
+														</NavigationMenuLink>
+													</li>
+												))}
+											</>
+										)}
+									</SignedIn>
 								</ul>
 							</NavigationMenuContent>
 						</NavigationMenuItem>
