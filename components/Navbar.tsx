@@ -25,36 +25,32 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
-import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
-import {
-	SignInButton,
-	SignedIn,
-	SignedOut,
-	UserButton,
-	useUser,
-} from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { useThemeManager } from "@/components/providers/theme-provider";
+import { useTheme } from "next-themes";
 
 const Navbar: React.FC = () => {
-	// Theme toggle
-	const { setTheme } = useTheme();
+	// Hooks for theme management
+	const { theme: currentTheme, setTheme: setCurrentTheme } = useThemeManager();
+	const { setTheme: setMode } = useTheme();
 
-	// Fetch user's custom themes
-	const { user } = useUser();
-	const userThemes = useQuery(
-		api.themes.getUserThemes,
-		user ? { userId: user.id } : "skip"
-	);
-
-	// Default themes
-	const defaultThemes = useMemo(
+	// Memoized lists for navigation and themes
+	const modes = useMemo(
 		() => [
 			{ icon: Computer, label: "system" },
 			{ icon: Sun, label: "light" },
 			{ icon: Moon, label: "dark" },
+		],
+		[]
+	);
+
+	const customThemes = useMemo(
+		() => [
+			{ label: "default", value: "default" },
+			{ label: "art-deco", value: "art-deco" },
+			{ label: "mono", value: "mono" },
 		],
 		[]
 	);
@@ -80,13 +76,13 @@ const Navbar: React.FC = () => {
 				icon: LucideLayoutDashboard,
 				label: "Dashboard",
 				href: "/dashboard",
-				active: pathname === "/dashboard",
+				active: pathname.startsWith("/dashboard"),
 			},
 			{
 				icon: Search,
 				label: "Search",
 				href: "/search",
-				active: pathname === "/search",
+				active: pathname.startsWith("/search"),
 			},
 		],
 		[pathname]
@@ -147,44 +143,53 @@ const Navbar: React.FC = () => {
 								Theme
 							</NavigationMenuTrigger>
 							<NavigationMenuContent>
-								<ul className='nav-menu'>
-									{defaultThemes.map((theme) => (
-										<li key={theme.label}>
-											<NavigationMenuLink asChild>
-												<Link
-													href='#'
-													className='nav-menu-link'
-													onClick={() => setTheme(theme.label)}>
-													<theme.icon size={16} />
-													{theme.label}
-												</Link>
-											</NavigationMenuLink>
-										</li>
-									))}
-									{/* User's custom themes (only when signed in) */}
-									<SignedIn>
-										{userThemes && userThemes.length > 0 && (
-											<>
-												<li>
-													<hr className='theme-separator' />
-												</li>
-												{userThemes.map((theme) => (
-													<li key={theme._id}>
-														<NavigationMenuLink asChild>
-															<Link
-																href='#'
-																className='nav-menu-link custom-theme'
-																onClick={() => setTheme(theme.value)}>
-																<Palette size={16} />
-																{theme.name}
-															</Link>
-														</NavigationMenuLink>
-													</li>
-												))}
-											</>
-										)}
-									</SignedIn>
-								</ul>
+								<div className='nav-menu w-40'>
+									{/* Mode Switcher */}
+									<div className='px-2 py-1.5 text-sm font-semibold'>Mode</div>
+									<ul>
+										{modes.map((mode) => (
+											<li key={mode.label}>
+												<NavigationMenuLink asChild>
+													<Link
+														href='#'
+														className='nav-menu-link'
+														onClick={() => setMode(mode.label)}>
+														<mode.icon size={16} />
+														{mode.label}
+													</Link>
+												</NavigationMenuLink>
+											</li>
+										))}
+									</ul>
+
+									{/* Separator */}
+									<div className='my-1 h-px bg-border' />
+
+									{/* Custom Theme Switcher */}
+									<div className='px-2 py-1.5 text-sm font-semibold'>Theme</div>
+									<ul>
+										{customThemes.map((theme) => (
+											<li key={theme.value}>
+												<NavigationMenuLink asChild>
+													<Link
+														href='#'
+														className={cn(
+															"nav-menu-link",
+															currentTheme === theme.value &&
+																"bg-accent text-accent-foreground"
+														)}
+														onClick={() =>
+															setCurrentTheme(
+																theme.value as "default" | "art-deco" | "mono"
+															)
+														}>
+														{theme.label}
+													</Link>
+												</NavigationMenuLink>
+											</li>
+										))}
+									</ul>
+								</div>
 							</NavigationMenuContent>
 						</NavigationMenuItem>
 						<SignedIn>

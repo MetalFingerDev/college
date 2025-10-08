@@ -1,10 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ClerkProvider, ClerkLoaded } from "@clerk/nextjs";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import ConvexClientProvider from "@/components/providers/ConvexClientProvider";
 import Navbar from "@/components/Navbar";
 import "../styles/globals.css";
+import "../styles/default.css";
 
 export const metadata: Metadata = {
 	title: "college",

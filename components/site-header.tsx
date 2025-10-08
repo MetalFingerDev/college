@@ -32,23 +32,11 @@ export function SiteHeader() {
 				{/**/}
 				<Breadcrumb>
 					<BreadcrumbList>
-						{segments.length > 0 ? (
-							<BreadcrumbItem>
-								<BreadcrumbLink asChild>
-									<Link href='/'>Home</Link>
-								</BreadcrumbLink>
-							</BreadcrumbItem>
-						) : (
-							<BreadcrumbItem>
-								<BreadcrumbPage>Home</BreadcrumbPage>
-							</BreadcrumbItem>
-						)}
 						{segments.map((segment, index) => {
 							const href = `/${segments.slice(0, index + 1).join("/")}`;
 							const isLast = index === segments.length - 1;
 							return (
 								<React.Fragment key={href}>
-									<BreadcrumbSeparator />
 									<BreadcrumbItem>
 										{isLast ? (
 											<BreadcrumbPage>
@@ -62,6 +50,7 @@ export function SiteHeader() {
 											</BreadcrumbLink>
 										)}
 									</BreadcrumbItem>
+									{!isLast && <BreadcrumbSeparator />}
 								</React.Fragment>
 							);
 						})}
