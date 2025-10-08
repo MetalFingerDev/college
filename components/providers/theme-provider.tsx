@@ -4,7 +4,7 @@ import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect";
 
-type Theme = "default" | "art-deco" | "mono";
+type Theme = "default" | "art-deco" | "mono" | "bubblegum";
 
 interface ThemeContextType {
 	theme: Theme;

@@ -18,7 +18,7 @@ import {
 import { Sun, Moon, Save, RefreshCcw } from "lucide-react";
 
 type ThemeMode = "light" | "dark";
-type ThemeName = "default" | "art-deco" | "mono";
+type ThemeName = "default" | "art-deco" | "mono" | "bubblegum";
 
 interface BrandColors {
 	primary: string;
@@ -39,6 +39,7 @@ const themeOptions: { label: string; value: ThemeName }[] = [
 	{ label: "Default", value: "default" },
 	{ label: "Art Deco", value: "art-deco" },
 	{ label: "Mono", value: "mono" },
+	{ label: "Bubblegum", value: "bubblegum" },
 ];
 
 export default function Themes({

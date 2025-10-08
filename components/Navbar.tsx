@@ -51,6 +51,7 @@ const Navbar: React.FC = () => {
 			{ label: "default", value: "default" },
 			{ label: "art-deco", value: "art-deco" },
 			{ label: "mono", value: "mono" },
+			{ label: "bubblegum", value: "bubblegum" },
 		],
 		[]
 	);
