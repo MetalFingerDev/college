@@ -66,7 +66,7 @@ export function Tools({
 	) => {
 		onExperiencesChange(
 			(experiences || []).map((exp) =>
-				exp.id === id ? { ...exp, [field]: value as any } : exp
+				exp.id === id ? { ...exp, [field]: value as string } : exp
 			)
 		);
 	};
