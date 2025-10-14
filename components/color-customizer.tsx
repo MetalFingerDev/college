@@ -1,9 +1,9 @@
 "use client";
 
-import { useThemeContext } from "@/hooks/use-theme-context";
+import { useTheme } from "@/components/providers/theme-provider";
 
 export function ColorCustomizer() {
-	const { colors, handleColorChange } = useThemeContext();
+	const { colors, setColors } = useTheme();
 
 	return (
 		<div className='space-y-4'>
@@ -15,7 +15,7 @@ export function ColorCustomizer() {
 						type='text'
 						className='flex-1 px-3 py-2 rounded-md border'
 						value={colors.primary}
-						onChange={(e) => handleColorChange("primary", e.target.value)}
+						onChange={(e) => setColors("primary", e.target.value)}
 					/>
 				</div>
 				<div className='flex items-center gap-4'>
@@ -24,9 +24,7 @@ export function ColorCustomizer() {
 						type='text'
 						className='flex-1 px-3 py-2 rounded-md border'
 						value={colors.primaryForeground}
-						onChange={(e) =>
-							handleColorChange("primaryForeground", e.target.value)
-						}
+						onChange={(e) => setColors("primaryForeground", e.target.value)}
 					/>
 				</div>
 				<div className='flex items-center gap-4'>
@@ -35,7 +33,7 @@ export function ColorCustomizer() {
 						type='text'
 						className='flex-1 px-3 py-2 rounded-md border'
 						value={colors.secondary}
-						onChange={(e) => handleColorChange("secondary", e.target.value)}
+						onChange={(e) => setColors("secondary", e.target.value)}
 					/>
 				</div>
 			</div>
