@@ -39,9 +39,6 @@
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
 
-	/* Custom Colors */
-	--color-sign-in: #6c47ff;
-
 	/* Typography */
 	--font-sans: var(--font-sans);
 	--font-mono: var(--font-mono);
@@ -71,57 +68,30 @@
 	body {
 		@apply bg-background text-foreground;
 	}
-	header {
-		@apply flex h-16 items-center justify-between gap-4 p-4 bg-background text-foreground border-b border-border;
-	}
 }
 
 @layer utilities {
-	.nav-link {
-		@apply flex flex-row items-center gap-2;
+	@keyframes rainbow {
+		0% {
+			color: #ef4444;
+		} /* red */
+		16.66% {
+			color: #f97316;
+		} /* orange */
+		33.33% {
+			color: #eab308;
+		} /* yellow */
+		50% {
+			color: #22c55e;
+		} /* green */
+		66.66% {
+			color: #3b82f6;
+		} /* blue */
+		83.33% {
+			color: #8b5cf6;
+		} /* purple */
+		100% {
+			color: #ef4444;
+		} /* back to red */
 	}
-	.nav-link-active {
-		@apply border-b-2 border-primary;
-	}
-	.nav-menu {
-		@apply grid w-auto gap-2 p-2;
-	}
-
-	.nav-menu-link {
-		@apply flex flex-row items-center gap-2 p-2;
-	}
-
-	.theme-trigger {
-		@apply flex flex-row items-center gap-2 font-normal;
-	}
-	.theme-link {
-		@apply flex flex-row items-center gap-2 p-2 rounded hover:bg-muted;
-	}
-	.signin-button {
-		@apply bg-[var(--color-sign-in)] text-primary-foreground border-b-2 border-primary shadow-[var(--shadow-2xl)] px-4 py-2 rounded-[var(--radius-md)];
-	}
-}
-
-@keyframes rainbow {
-	0% {
-		color: #ef4444;
-	} /* red */
-	16.66% {
-		color: #f97316;
-	} /* orange */
-	33.33% {
-		color: #eab308;
-	} /* yellow */
-	50% {
-		color: #22c55e;
-	} /* green */
-	66.66% {
-		color: #3b82f6;
-	} /* blue */
-	83.33% {
-		color: #8b5cf6;
-	} /* purple */
-	100% {
-		color: #ef4444;
-	} /* back to red */
 }

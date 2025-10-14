@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 
 const Hero = () => {
-
-  return (<div className='font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20'>
+	return (
+		<div className='font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20'>
 			<main className='flex flex-col gap-[32px] row-start-2 items-center sm:items-start'>
 				<Image
 					className='dark:invert'
@@ -96,7 +96,8 @@ const Hero = () => {
 					Go to nextjs.org →
 				</a>
 			</footer>
-		</div>);
+		</div>
+	);
 };
 
 export default Hero;

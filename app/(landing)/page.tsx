@@ -1,12 +1,12 @@
 "use client";
 
-import Hero from "@/components/Hero";
-import Content from "@/components/Content";
+import Hero from "@/components/hero";
+import Content from "@/components/content";
 import { Authenticated, Unauthenticated } from "convex/react";
 
 export default function Home() {
 	return (
-		<>
+		<main>
 			<Authenticated>
 				<Content />
 			</Authenticated>
@@ -14,6 +14,6 @@ export default function Home() {
 			<Unauthenticated>
 				<Hero />
 			</Unauthenticated>
-		</>
+		</main>
 	);
 }
