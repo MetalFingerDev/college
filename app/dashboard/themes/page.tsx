@@ -8,7 +8,7 @@ import { Eye, Palette, Save, Sparkles, Type } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function ThemesPage() {
-	const { reset, save, mode, theme } = useTheme();
+	const { reset, save, theme } = useTheme();
 
 	return (
 		<div className='space-y-8'>
