@@ -1,14 +1,49 @@
 "use client";
 
-import { useTheme } from "@/components/providers/theme-provider";
+import {
+	ThemeMode,
+	ThemeVariant,
+	useTheme,
+} from "@/components/providers/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Eye, Palette, Save, Sparkles, Type } from "lucide-react";
+import { Palette, RefreshCcw, Save, Sparkles, Type } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
 
 export default function ThemesPage() {
-	const { reset, save, theme } = useTheme();
+	const {
+		// Current states
+		mode,
+		theme,
+		colors,
+		// State setters
+		setMode,
+		setTheme,
+		setColors,
+		// Actions
+		reset,
+		save,
+		// Options
+		modeOptions,
+		themeOptions,
+	} = useTheme();
+
+	// Mode switching
+	const handleModeChange = (newMode: ThemeMode) => {
+		setMode(newMode);
+	};
+
+	// Theme switching
+	const handleThemeChange = (newTheme: ThemeVariant) => {
+		setTheme(newTheme);
+	};
+
+	// Color changing
+	const handleColorChange = (colorKey: keyof BrandColors, value: string) => {
+		setColors(colorKey, value);
+	};
 
 	return (
 		<div className='space-y-8'>
@@ -60,20 +95,40 @@ export default function ThemesPage() {
 						<Sparkles className='h-5 w-5 text-primary' />
 						<h3 className='font-semibold'>Quick Actions</h3>
 					</div>
-					<div className='mt-4 space-y-3'>
+					<div className='mt-4 space-y-4'>
+						{/* Mode Switcher */}
+						<div className='space-y-2'>
+							<label className='text-sm font-medium'>Mode</label>
+							<div className='grid grid-cols-3 gap-2'>
+								{modeOptions.map((option) => (
+									<Button
+										key={option.label}
+										size='sm'
+										variant={mode === option.label ? "default" : "outline"}
+										onClick={() => handleModeChange(option.label)}
+										className='capitalize'>
+										{option.label}
+									</Button>
+								))}
+							</div>
+						</div>
+
+						<Separator />
+
+						{/* Theme Actions */}
 						<Button
 							className='w-full justify-start'
 							variant='outline'
 							onClick={save}>
 							<Save className='mr-2 h-4 w-4' />
-							Save Theme
+							Save Changes
 						</Button>
 						<Button
 							className='w-full justify-start'
 							variant='outline'
 							onClick={reset}>
-							<Eye className='mr-2 h-4 w-4' />
-							Preview
+							<RefreshCcw className='mr-2 h-4 w-4' />
+							Reset to Default
 						</Button>
 					</div>
 				</Card>
@@ -86,50 +141,32 @@ export default function ThemesPage() {
 					</div>
 					<ScrollArea className='mt-4 h-[120px]'>
 						<div className='grid grid-cols-2 gap-2'>
-							{["zinc", "slate", "stone", "gray", "neutral", "red", "rose"].map(
-								(color) => (
-									<Button
-										key={color}
-										variant='outline'
-										className={cn(
-											"h-8 w-full capitalize",
-											theme === color && "border-2 border-primary"
-										)}>
-										{color}
-									</Button>
-								)
-							)}
+							{themeOptions.map((option) => (
+								<Button
+									key={option.value}
+									variant='outline'
+									onClick={() => handleThemeChange(option.value)}
+									className={cn(
+										"h-8 w-full capitalize",
+										theme === option.value && "border-2 border-primary"
+									)}>
+									{option.label}
+								</Button>
+							))}
 						</div>
 					</ScrollArea>
 				</Card>
 
-				{/* Typography */}
+				{/* Typography - Coming Soon */}
 				<Card className='p-6'>
 					<div className='flex items-center gap-2'>
 						<Type className='h-5 w-5 text-primary' />
 						<h3 className='font-semibold'>Typography</h3>
 					</div>
-					<div className='mt-4 space-y-4'>
-						<div className='space-y-2'>
-							<label className='text-sm font-medium'>Font Family</label>
-							<Button variant='outline' className='w-full justify-start'>
-								Inter
-							</Button>
-						</div>
-						<div className='space-y-2'>
-							<label className='text-sm font-medium'>Font Scale</label>
-							<div className='grid grid-cols-3 gap-2'>
-								<Button size='sm' variant='outline'>
-									Small
-								</Button>
-								<Button size='sm' variant='outline'>
-									Medium
-								</Button>
-								<Button size='sm' variant='outline'>
-									Large
-								</Button>
-							</div>
-						</div>
+					<div className='mt-4 space-y-1'>
+						<p className='text-sm text-muted-foreground'>
+							Typography customization coming soon...
+						</p>
 					</div>
 				</Card>
 			</div>
