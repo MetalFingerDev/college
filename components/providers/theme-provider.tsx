@@ -43,6 +43,14 @@ export interface ThemeContextType {
 	modeOptions: ModeOption[];
 	themeOptions: ThemeOption[];
 
+	// Staging state
+	stagedMode: ThemeMode;
+	stagedTheme: ThemeVariant;
+	stagedColors: BrandColors;
+	setStagedMode: (mode: ThemeMode) => void;
+	setStagedTheme: (theme: ThemeVariant) => void;
+	setStagedColors: (field: keyof BrandColors, value: string) => void;
+
 	// Actions
 	reset: () => void;
 	save: () => void;
@@ -85,6 +93,10 @@ export function ThemeProvider({
 		}
 		return "system";
 	});
+
+	// Staged mode state
+	const [stagedMode, setStagedMode] = React.useState<ThemeMode>(mode);
+
 	const [resolvedMode, setResolvedMode] = React.useState<"light" | "dark">(
 		window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
 	);
@@ -92,8 +104,14 @@ export function ThemeProvider({
 	// Theme variant state
 	const [theme, setTheme] = React.useState<ThemeVariant>("default");
 
+	// Staged theme state
+	const [stagedTheme, setStagedTheme] = React.useState<ThemeVariant>(theme);
+
 	// Colors state
 	const [colors, setColors] = React.useState<BrandColors>(initialColors);
+
+	// Staged colors state
+	const [stagedColors, setStagedColors] = React.useState<BrandColors>(colors);
 
 	// Theme options
 	const modeOptions = React.useMemo(
@@ -141,21 +159,25 @@ export function ThemeProvider({
 
 	// Handle reset
 	const handleReset = React.useCallback(() => {
-		setMode("system");
-		setTheme("default");
-		setColors(initialColors);
-	}, []);
+		setStagedMode(mode);
+		setStagedTheme(theme);
+		setStagedColors(colors);
+	}, [mode, theme, colors]);
 
-	// Handle save (you can implement persistence here)
+	// Handle save (apply staged changes)
 	const handleSave = React.useCallback(() => {
-		// Save to localStorage or your backend
+		setMode(stagedMode);
+		setTheme(stagedTheme);
+		setColors(stagedColors);
+
+		// Save to localStorage
 		const themeSettings = {
-			mode,
-			theme,
-			colors,
+			mode: stagedMode,
+			theme: stagedTheme,
+			colors: stagedColors,
 		};
 		localStorage.setItem("themeSettings", JSON.stringify(themeSettings));
-	}, [mode, theme, colors]);
+	}, [stagedMode, stagedTheme, stagedColors]);
 
 	// Load saved settings
 	React.useEffect(() => {
@@ -193,24 +215,39 @@ export function ThemeProvider({
 
 	const value = React.useMemo(
 		() => ({
+			// Current states
 			mode,
-			setMode,
-			resolvedMode,
 			theme,
-			setTheme,
 			colors,
+			resolvedMode,
+			// State setters
+			setMode,
+			setTheme,
 			setColors: handleColorChange,
+			// Staged states
+			stagedMode,
+			stagedTheme,
+			stagedColors,
+			// Staged setters
+			setStagedMode,
+			setStagedTheme,
+			setStagedColors: handleColorChange,
+			// Options
 			modeOptions,
 			themeOptions,
+			// Actions
 			reset: handleReset,
 			save: handleSave,
 		}),
 		[
 			mode,
-			resolvedMode,
 			theme,
 			colors,
+			resolvedMode,
 			handleColorChange,
+			stagedMode,
+			stagedTheme,
+			stagedColors,
 			modeOptions,
 			themeOptions,
 			handleReset,
