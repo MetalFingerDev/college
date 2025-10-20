@@ -18,6 +18,7 @@ import {
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
+import { NavDashboard } from "@/components/nav-dashboard";
 import { NavPortfolio } from "@/components/nav-portfolio";
 import Link from "next/link";
 import {
@@ -65,6 +66,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				title: "Classes",
 				url: "#",
 				icon: IconUsers,
+			},
+		],
+
+		navDashboard: [
+			{
+				title: "Dashboard",
+				url: "#",
+				icon: IconDashboard,
 			},
 		],
 
@@ -116,7 +125,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				</SidebarMenu>
 			</SidebarHeader>
 			<SidebarContent>
-				{pathname === "/dashboard" ? <NavMain items={data.navMain} /> : null}
+				{/* Render data based on pathname */}
+				{pathname === "/" ? <NavMain items={data.navMain} /> : null}
+				{pathname === "/dashboard" ? (
+					<NavDashboard items={data.navDashboard} />
+				) : null}
 				{pathname === "/dashboard/portfolio" ? (
 					<NavPortfolio items={data.navPortfolio} />
 				) : null}

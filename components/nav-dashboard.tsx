@@ -9,7 +9,7 @@ import {
 
 import { type Icon } from "@tabler/icons-react";
 
-export function NavPortfolio({
+export function NavDashboard({
 	items,
 }: {
 	items: {
